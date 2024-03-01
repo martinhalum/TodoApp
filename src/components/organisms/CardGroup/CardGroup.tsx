@@ -4,13 +4,13 @@
  *
  */
 
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Text, View} from 'react-native';
 
 import CardDetails from '@molecules/CardDetails';
 
 import CardGroupStyles from './styles';
-import type {PropsType} from './types';
+import type {PropsType, TodoType} from './types';
 
 /**
  * Renders a group of `CardDetails` components based on the provided `cardData` prop.
@@ -20,10 +20,44 @@ import type {PropsType} from './types';
  * @param {Array} props.cardData - An array of objects representing the data for each card.
  * @returns A React-Native component that renders a group of CardDetails components.
  */
-function CardGroup({cardData}: PropsType): React.ReactElement {
+function CardGroup({
+  cardData,
+  filter,
+  showLength,
+}: PropsType): React.ReactElement {
+  const [filteredData, setFilteredData] = useState(cardData);
+
+  useEffect(() => {
+    const newData: TodoType[] = [];
+    if (filter === 'all') {
+      setFilteredData(cardData);
+    } else if (filter === 'ongoing') {
+      cardData.forEach(value => {
+        if (value.prio !== 0) {
+          newData.push(value);
+        }
+      });
+      setFilteredData(newData);
+    } else {
+      cardData.forEach(value => {
+        if (value.prio === 0) {
+          newData.push(value);
+        }
+      });
+      setFilteredData(newData);
+    }
+  }, [cardData, filter]);
+
   return (
     <View testID="card-group">
-      {cardData.map((value, index) => {
+      {showLength && (
+        <View style={CardGroupStyles.totalContainer}>
+          <Text style={CardGroupStyles.totalLabel}>
+            Total: {filteredData.length}
+          </Text>
+        </View>
+      )}
+      {filteredData.map((value, index) => {
         return (
           <View key={index.toString()} style={CardGroupStyles.wrapper}>
             <CardDetails todoData={value} />

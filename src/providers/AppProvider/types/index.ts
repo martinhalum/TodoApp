@@ -8,6 +8,7 @@ export type AppContextType = {
   addTasks: (data?: TodoType) => void;
   addSubTasks: (data?: TodoType, input?: any) => void;
   updateTasks: (data?: TodoType) => void;
+  deleteTask: (id: number) => void;
   updateSubTasks: (
     task?: TodoType,
     data?: SubtaskType[],

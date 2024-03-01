@@ -18,6 +18,14 @@ const CardGroupStyles = StyleSheet.create({
     color: MainTheme.colors.buttonBorder,
     fontWeight: '600',
   },
+  totalContainer: {
+    marginTop: 10,
+    width: '100%',
+    alignItems: 'flex-end',
+  },
+  totalLabel: {
+    fontWeight: '600',
+  },
 });
 
 export default CardGroupStyles;

@@ -76,13 +76,11 @@ function DetailPageLayout({
               label="Add a subtask"
               type="outlined"
               onPress={setShowModal}
-              disabled={
-                details.subtask?.length === 3 || details.prio === 'Done'
-              }
+              disabled={details.subtask?.length === 3 || details.prio === 0}
             />
           </View>
           <View style={DetailPageLayoutStyles.submitContainer}>
-            {details.prio !== 'Done' && (
+            {details.prio !== 0 && (
               <Button label="Done" type="submit" onPress={onPressDone} />
             )}
           </View>

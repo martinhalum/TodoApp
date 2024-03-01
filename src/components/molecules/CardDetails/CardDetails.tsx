@@ -16,9 +16,10 @@ import useAppStore from 'providers/AppProvider';
 
 import {StackParamList} from '@navigation/stack/types';
 
-import {SUBTITLE, TITLE} from './config';
+import {SUBTITLE, TITLE, PRIO_LABEL} from './config';
 
 import type {PropsType} from './types';
+import {Alert} from 'react-native';
 
 /**
  * Represents a card with details of a todo task.
@@ -32,9 +33,9 @@ import type {PropsType} from './types';
  */
 function CardDetails({todoData}: PropsType): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<StackParamList>>();
-  const {setSelectedItem} = useAppStore();
+  const {setSelectedItem, deleteTask} = useAppStore();
   const {title, dateDue, prio} = todoData;
-  const isDone = prio === 'Done';
+  const isDone = prio === 0;
 
   /**
    * Handles the onPress event of the card.
@@ -45,9 +46,25 @@ function CardDetails({todoData}: PropsType): React.ReactElement {
     navigation.navigate('DetailPage');
   };
 
+  const deleteHandler = () => {
+    Alert.alert('Warning!', 'Are you sure you want to delete this task?', [
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: () => {
+          deleteTask(todoData.id);
+        },
+      },
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+    ]);
+  };
+
   return (
-    <Card isPrio={!isDone} onPress={onPressHandler}>
-      <PriorityMarker label={prio} isPrio={!isDone} />
+    <Card isPrio={!isDone} onPress={onPressHandler} onLongPress={deleteHandler}>
+      <PriorityMarker label={PRIO_LABEL[prio]} isPrio={!isDone} />
       <TitleSubtitle
         title={title}
         subtitle={dateDue}

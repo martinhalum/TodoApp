@@ -53,7 +53,7 @@ function TodoTaskModal({
 
   const handleRightButton = () => {
     const data = {
-      id: Math.random(),
+      id: Math.floor(Math.random() * 10),
       title: taskTitle,
       description: description,
       dateDue: dateDue,

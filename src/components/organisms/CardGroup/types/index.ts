@@ -16,9 +16,11 @@ export type TodoType = {
   description: string;
   dateDue: string;
   subtask?: SubtaskType[];
-  prio: string;
+  prio: number;
 };
 
 export type PropsType = {
   cardData: TodoType[];
+  filter?: string;
+  showLength?: boolean;
 };

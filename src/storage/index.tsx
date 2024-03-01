@@ -15,7 +15,6 @@ import {PERSISTENT_STORAGE_KEY} from './config';
  * @returns {void}
  */
 export const setItem = (data: string) => {
-  console.log(data);
   AsyncStorage.setItem(PERSISTENT_STORAGE_KEY, data);
 };
 

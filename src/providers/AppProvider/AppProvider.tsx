@@ -19,7 +19,7 @@ const useAppStore = create<AppContextType>()(set => ({
     description:
       'Nam rutrum, dui non ornare convallis, purus tortor condimentum justo, non varius augue est ac ante. Ut euismod tempus ornare. Phasellus interdum, velit in sagittis sollicitudin, erat dui tempus ex, at congue ligula dui a enim. Pellentesque urna nisl, vulputate sed condimentum vel, auctor eget ante. Fusce eleifend odio euismod fringilla rhoncus.',
     dateDue: 'September 21',
-    prio: 'High',
+    prio: 3,
   },
   setSelectedItem: selectedItem => set({selectedItem: selectedItem}),
   fetchStorage: async () => {
@@ -79,7 +79,7 @@ const useAppStore = create<AppContextType>()(set => ({
     set(state => {
       const newTasks = [...state.todoTasks];
       if (data !== undefined) {
-        data.prio = 'Done';
+        data.prio = 0;
 
         newTasks.forEach((value, index) => {
           if (value.id === data.id) {
@@ -90,6 +90,19 @@ const useAppStore = create<AppContextType>()(set => ({
 
       setItem(JSON.stringify(newTasks));
       return {todoTasks: newTasks};
+    });
+  },
+  deleteTask: (id: number) => {
+    set(state => {
+      state.todoTasks.forEach((value, index) => {
+        if (value.id === id) {
+          state.todoTasks.splice(index, 1);
+        }
+      });
+
+      setItem(JSON.stringify(state.todoTasks));
+
+      return {todoTasks: state.todoTasks};
     });
   },
   updateSubTasks: (

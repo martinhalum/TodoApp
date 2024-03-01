@@ -8,6 +8,7 @@ import {ReactNode} from 'react';
 
 export type PropsType = {
   onPress?: () => void;
+  onLongPress?: () => void;
   isPrio?: boolean;
   children: ReactNode;
 };

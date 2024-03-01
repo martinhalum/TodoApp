@@ -24,6 +24,8 @@ const useDateStore = create<DateTypes>()(set => ({
     const startOfWeek = startOfISOWeek(nowDate).getDate() - 1;
     const weekData: WeekType[] = [];
 
+    console.log(nowDate);
+
     for (let ctr = 0; ctr < 7; ctr++) {
       weekData.push({
         dayLabel: DAY_NAME[ctr],

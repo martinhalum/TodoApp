@@ -4,15 +4,16 @@
  *
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {ScrollView, View} from 'react-native';
 
-import CalendarHeader from '@organisms/CalendarHeader';
-import CardGroup from '@organisms/CardGroup';
+// import CalendarHeader from '@organisms/CalendarHeader';
+import Header from '@atoms/Header';
 import PillBox from '@molecules/PillBox';
+import CardGroup from '@organisms/CardGroup';
 import Footer from '@organisms/Footer';
 
-import useDateStore from '@providers/DateProvider';
+// import useDateStore from '@providers/DateProvider';
 import useAppStore from 'providers/AppProvider';
 
 import HomePageLayoutStyles from './styles';
@@ -25,24 +26,22 @@ import {PILLBOX_SELECTION, DEFAULT_SELECTION} from './config';
  * @param onPressAdd - Function that handles the action when the add button in the footer is pressed.
  * @returns A React-Native element representing the layout of the home page.
  */
-function HomePageLayout({
-  onPressAdd,
-  todoTasksData,
-}: PropsType): React.ReactElement {
-  const [sort, setSort] = useState(DEFAULT_SELECTION);
-  const {currentMonth, currentDate, currentWeek, initDone, initDate} =
-    useDateStore();
+function HomePageLayout({onPressAdd}: PropsType): React.ReactElement {
   const {todoTasks} = useAppStore();
+  // const {currentMonth, currentDate, currentWeek, initDone, initDate} =
+  //   useDateStore();
+
+  const [filter, setFilter] = useState(DEFAULT_SELECTION);
 
   const handleSelectSort = selectedItem => {
-    setSort(selectedItem);
+    setFilter(selectedItem);
   };
 
-  useEffect(() => {
-    if (!initDone) {
-      initDate();
-    }
-  }, [initDone, initDate]);
+  // useEffect(() => {
+  //   if (!initDone) {
+  //     initDate();
+  //   }
+  // }, [initDone, initDate]);
 
   return (
     <View style={HomePageLayoutStyles.wrapper}>
@@ -50,18 +49,19 @@ function HomePageLayout({
         style={HomePageLayoutStyles.container}
         contentInset={HomePageLayoutStyles.spacer}
         showsVerticalScrollIndicator={false}>
-        <CalendarHeader
+        {/* <CalendarHeader
           testId="calendar-header"
           monthTitle={currentMonth}
           currentDate={currentDate}
           weekData={currentWeek}
-        />
+        /> */}
+        <Header label="FastTask" />
         <PillBox
-          selectedItem={sort}
+          selectedItem={filter}
           setSelectedItem={handleSelectSort}
           data={PILLBOX_SELECTION}
         />
-        <CardGroup cardData={todoTasksData || todoTasks} />
+        <CardGroup cardData={todoTasks} filter={filter.value} showLength />
       </ScrollView>
       <Footer onPressAdd={onPressAdd} />
     </View>

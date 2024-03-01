@@ -7,19 +7,19 @@
 export const PILLBOX_SELECTION = [
   {
     label: 'Low',
-    value: 'Low',
+    value: '1',
   },
   {
     label: 'Medium',
-    value: 'Med',
+    value: '2',
   },
   {
     label: 'High',
-    value: 'High',
+    value: '3',
   },
 ];
 
 export const DEFAULT_PRIORITY = {
   label: 'Low',
-  value: 'Low',
+  value: '1',
 };
