@@ -33,8 +33,20 @@ function HomePageLayout({onPressAdd}: PropsType): React.ReactElement {
 
   const [filter, setFilter] = useState(DEFAULT_SELECTION);
 
-  const handleSelectSort = selectedItem => {
+  const handleSelectFilter = selectedItem => {
     setFilter(selectedItem);
+  };
+
+  const sortData = data => {
+    return data.sort((a, b) => {
+      // First, sort by 'prio' in descending order
+      if (b.prio !== a.prio) {
+        return b.prio - a.prio;
+      } else {
+        // If 'prio' is the same, sort by 'title' in ascending order
+        return a.title.localeCompare(b.title);
+      }
+    });
   };
 
   // useEffect(() => {
@@ -58,10 +70,14 @@ function HomePageLayout({onPressAdd}: PropsType): React.ReactElement {
         <Header label="FastTask" />
         <PillBox
           selectedItem={filter}
-          setSelectedItem={handleSelectSort}
+          setSelectedItem={handleSelectFilter}
           data={PILLBOX_SELECTION}
         />
-        <CardGroup cardData={todoTasks} filter={filter.value} showLength />
+        <CardGroup
+          cardData={sortData(todoTasks)}
+          filter={filter.value}
+          showLength
+        />
       </ScrollView>
       <Footer onPressAdd={onPressAdd} />
     </View>
