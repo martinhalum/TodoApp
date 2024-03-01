@@ -22,9 +22,9 @@ const useAppStore = create<AppContextType>()(set => ({
     prio: 3,
   },
   setSelectedItem: selectedItem => set({selectedItem: selectedItem}),
-  fetchStorage: async () => {
+  fetchStorage: async (userId?: string) => {
     try {
-      const response = await getItem();
+      const response = await getItem(userId);
 
       if (response) {
         set({todoTasks: JSON.parse(response)});
@@ -33,7 +33,7 @@ const useAppStore = create<AppContextType>()(set => ({
       console.error(error);
     }
   },
-  addTasks: (data?: TodoType) => {
+  addTasks: (data?: TodoType, userId?: string) => {
     set(state => {
       const newTodoData = state.todoTasks;
 
@@ -43,12 +43,12 @@ const useAppStore = create<AppContextType>()(set => ({
         });
       }
 
-      setItem(JSON.stringify(newTodoData));
+      setItem(JSON.stringify(newTodoData), userId);
 
       return {todoTasks: newTodoData};
     });
   },
-  addSubTasks: (details?: TodoType, data?: string) => {
+  addSubTasks: (details?: TodoType, data?: string, userId?: string) => {
     const newSubTask = details?.subtask === undefined ? [] : details.subtask;
 
     if (data !== undefined && details !== undefined) {
@@ -70,12 +70,12 @@ const useAppStore = create<AppContextType>()(set => ({
         }
       });
 
-      setItem(JSON.stringify(state.todoTasks));
+      setItem(JSON.stringify(state.todoTasks), userId);
 
       return {todoTasks: state.todoTasks};
     });
   },
-  updateTasks: (data?: TodoType) => {
+  updateTasks: (data?: TodoType, userId?: string) => {
     set(state => {
       const newTasks = [...state.todoTasks];
       if (data !== undefined) {
@@ -88,11 +88,11 @@ const useAppStore = create<AppContextType>()(set => ({
         });
       }
 
-      setItem(JSON.stringify(newTasks));
+      setItem(JSON.stringify(newTasks), userId);
       return {todoTasks: newTasks};
     });
   },
-  deleteTask: (id: number) => {
+  deleteTask: (id: number, userId?: string) => {
     set(state => {
       state.todoTasks.forEach((value, index) => {
         if (value.id === id) {
@@ -100,7 +100,7 @@ const useAppStore = create<AppContextType>()(set => ({
         }
       });
 
-      setItem(JSON.stringify(state.todoTasks));
+      setItem(JSON.stringify(state.todoTasks), userId);
 
       return {todoTasks: state.todoTasks};
     });
@@ -109,6 +109,7 @@ const useAppStore = create<AppContextType>()(set => ({
     details?: TodoType,
     subtasks?: SubtaskType[],
     data?: SubtaskType,
+    userId?: string,
   ) => {
     if (subtasks !== undefined && data !== undefined && details !== undefined) {
       data.done = true;
@@ -131,7 +132,7 @@ const useAppStore = create<AppContextType>()(set => ({
         }
       });
 
-      setItem(JSON.stringify(state.todoTasks));
+      setItem(JSON.stringify(state.todoTasks), userId);
 
       return {todoTasks: state.todoTasks};
     });

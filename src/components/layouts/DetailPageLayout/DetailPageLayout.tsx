@@ -19,6 +19,7 @@ import {StackParamList} from '@navigation/stack/types';
 import DetailPageLayoutStyles from './styles';
 
 import type {PropsType} from './types';
+import useUserStore from '@providers/UserProvider';
 
 /**
  * Renders a detail page layout for a specific task.
@@ -35,13 +36,16 @@ function DetailPageLayout({
   setShowModal,
 }: PropsType): React.ReactElement {
   const navigation = useNavigation<NavigationProp<StackParamList>>();
+  const {user} = useUserStore(state => ({
+    user: state.user,
+  }));
   const {updateTasks} = useAppStore();
 
   /**
    * Updates the task's status and navigates back to the previous page.
    */
   const onPressDone = () => {
-    updateTasks(details);
+    updateTasks(details, user?.id);
     navigation.goBack();
   };
 

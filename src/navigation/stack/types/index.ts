@@ -5,4 +5,5 @@ export type PropsType = {
 export type StackParamList = {
   HomePage: undefined;
   DetailPage: undefined;
+  LoginPage: undefined;
 };

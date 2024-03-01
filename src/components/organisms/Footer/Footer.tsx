@@ -6,9 +6,14 @@
 
 import React from 'react';
 import {View, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import IconFa5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+
+import {StackParamList} from '@navigation/stack/types';
+import useUserStore from '@providers/UserProvider';
 
 import FooterStyles from './styles';
 
@@ -25,18 +30,27 @@ import type {PropsType} from './types';
  * @returns A React-Native element representing the footer view with icons.
  */
 function Footer({onPressAdd}: PropsType): React.ReactElement {
+  const navigation = useNavigation<StackNavigationProp<StackParamList>>();
+
+  const {user} = useUserStore(state => ({
+    user: state.user,
+  }));
+
   return (
     <View style={FooterStyles.container}>
-      <IconFa5 name="home" size={24} style={FooterStyles.icon} />
-      <Icon name="folder-o" size={26} style={FooterStyles.icon} />
+      <TouchableOpacity>
+        <IconFa5 name="home" size={24} style={FooterStyles.icon} />
+      </TouchableOpacity>
       <TouchableOpacity
         testID="Add"
         style={FooterStyles.addContainer}
-        onPress={onPressAdd}>
+        onPress={onPressAdd}
+        disabled={user === null}>
         <IconFa5 name="plus" size={20} style={FooterStyles.addIcon} />
       </TouchableOpacity>
-      <Icon name="comment-o" size={26} style={FooterStyles.icon} />
-      <Ionicons name="person-outline" size={26} style={FooterStyles.icon} />
+      <TouchableOpacity onPress={() => navigation.navigate('LoginPage')}>
+        <Ionicons name="person-outline" size={26} style={FooterStyles.icon} />
+      </TouchableOpacity>
     </View>
   );
 }

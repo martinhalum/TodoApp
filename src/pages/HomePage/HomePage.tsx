@@ -9,7 +9,9 @@ import {Modal, SafeAreaView} from 'react-native';
 
 import HomePageLayout from '@layouts/HomePageLayout';
 import TodoTaskModal from '@layouts/TodoTaskModal';
-import useAppStore from 'providers/AppProvider';
+
+import useAppStore from '@providers/AppProvider';
+import useUserStore from '@providers/UserProvider';
 
 import HomePageStyles from './styles';
 
@@ -27,11 +29,15 @@ import HomePageStyles from './styles';
  */
 function HomePage(): React.ReactElement {
   const {addTasks, fetchStorage} = useAppStore();
+  const {user, initialize} = useUserStore(state => ({
+    user: state.user,
+    initialize: state.initialize,
+  }));
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    fetchStorage();
-  });
+    fetchStorage(user?.id);
+  }, [fetchStorage, initialize, user?.id]);
 
   /**
    * Handles saving a new task.
@@ -41,7 +47,7 @@ function HomePage(): React.ReactElement {
    */
   const saveTodoTaskHandler = (data: any) => {
     setShowModal(false);
-    addTasks(data);
+    addTasks(data, user?.id);
   };
 
   return (
